@@ -1,6 +1,13 @@
+from typing import Type
+
 from rest_framework.viewsets import ModelViewSet
+from rest_framework.serializers import Serializer
 from airplanes.models import Airplane, AirplaneType
-from airplanes.serializers import AirplaneSerializer, AirplaneTypeSerializer
+from airplanes.serializers import (
+    AirplaneDetailSerializer,
+    AirplaneTypeSerializer,
+    AirplaneListSerializer,
+)
 
 
 class AirplaneTypeViewSet(ModelViewSet):
@@ -14,4 +21,13 @@ class AirplaneViewSet(ModelViewSet):
     """Airplane CRUD endpoints"""
 
     queryset = Airplane.objects.all()
-    serializer_class = AirplaneSerializer
+    serializer_class = AirplaneDetailSerializer
+
+    def get_serializer_class(self) -> Type[Serializer]:
+        if self.action == "list":
+            return AirplaneListSerializer
+
+        if self.action == "retrieve":
+            return AirplaneDetailSerializer
+
+        return super().get_serializer_class()

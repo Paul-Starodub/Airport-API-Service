@@ -27,7 +27,4 @@ class AirplaneViewSet(ModelViewSet):
         if self.action == "list":
             return AirplaneListSerializer
 
-        if self.action == "retrieve":
-            return AirplaneDetailSerializer
-
         return super().get_serializer_class()

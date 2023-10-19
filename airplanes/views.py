@@ -24,7 +24,7 @@ class AirplaneViewSet(ModelViewSet):
     serializer_class = AirplaneDetailSerializer
 
     def get_serializer_class(self) -> Type[Serializer]:
-        if self.action == "list":
+        if self.action in ("list", "retrieve"):
             return AirplaneListSerializer
 
         return super().get_serializer_class()

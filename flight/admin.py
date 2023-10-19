@@ -1,3 +1,6 @@
 from django.contrib import admin
+from flight.models import Crew, Flight
 
-# Register your models here.
+
+admin.site.register(Crew)
+admin.site.register(Flight)

@@ -3,7 +3,7 @@ from rest_framework import serializers
 from locations.models import Route, Airport
 
 
-class AirportSerializer(serializers.Serializer):
+class AirportSerializer(serializers.ModelSerializer):
     class Meta:
         model = Airport
         fields = ("id", "name", "closest_big_city")

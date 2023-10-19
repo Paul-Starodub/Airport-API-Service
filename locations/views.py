@@ -18,8 +18,11 @@ class RouteViewSet(ModelViewSet):
     serializer_class = RouteDetailSerializer
 
     def get_serializer_class(self) -> Type[Serializer]:
-        if self.action == "list":
+        if self.action in "list":
             return RouteListSerializer
+
+        if self.action in "retrieve":
+            return RouteDetailSerializer
 
         return super().get_serializer_class()
 

@@ -11,7 +11,13 @@ from locations.serializers import RouteListSerializer, RouteDetailSerializer
 class CrewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Crew
-        fields = ("id", "first_name", "last_name")
+        fields = ("id", "first_name", "last_name", "flights")
+
+
+class CrewDetailSerializer(CrewSerializer):
+    flights = serializers.SlugRelatedField(
+        read_only=True, many=True, slug_field="departure_time"
+    )
 
 
 class FlightSerializer(serializers.ModelSerializer):

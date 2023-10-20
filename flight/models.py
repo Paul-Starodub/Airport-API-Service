@@ -29,6 +29,13 @@ class Flight(models.Model):
     )
     departure_time = models.DateTimeField(auto_now_add=True)
     arrival_time = models.DateTimeField(auto_now_add=True)
+    crews = models.ManyToManyField(to=Crew, related_name="flights")
+
+    class Meta:
+        unique_together = ("id", "crews")
+
+    def __str__(self) -> str:
+        return f"Route #{self.id}"
 
     def clean(self) -> None:
         if self.arrival_time <= self.departure_time:

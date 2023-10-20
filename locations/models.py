@@ -5,7 +5,7 @@ from django.core.exceptions import ValidationError
 class Airport(models.Model):
     """Description of an airport"""
 
-    name = models.CharField(max_length=128, unique=True)
+    name = models.CharField(max_length=128)
     closest_big_city = models.CharField(max_length=128)
 
     def __str__(self) -> str:
@@ -13,6 +13,7 @@ class Airport(models.Model):
 
     class Meta:
         ordering = ("name",)
+        unique_together = ("name", "closest_big_city")
 
 
 class Route(models.Model):

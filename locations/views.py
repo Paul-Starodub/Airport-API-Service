@@ -8,6 +8,7 @@ from locations.serializers import (
     RouteDetailSerializer,
     RouteListSerializer,
     AirportSerializer,
+    RouteSerializer,
 )
 
 
@@ -15,13 +16,13 @@ class RouteViewSet(ModelViewSet):
     """Route CRUD endpoints"""
 
     queryset = Route.objects.all()
-    serializer_class = RouteDetailSerializer
+    serializer_class = RouteSerializer
 
     def get_serializer_class(self) -> Type[Serializer]:
-        if self.action in "list":
+        if self.action == "list":
             return RouteListSerializer
 
-        if self.action in "retrieve":
+        if self.action == "retrieve":
             return RouteDetailSerializer
 
         return super().get_serializer_class()

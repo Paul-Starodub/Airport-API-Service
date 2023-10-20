@@ -15,13 +15,16 @@ class RouteSerializer(serializers.ModelSerializer):
         fields = ("id", "source", "destination", "distance")
 
 
-class RouteDetailSerializer(RouteSerializer):
-    source = serializers.CharField(source="source.name", read_only=True)
+class RouteListSerializer(RouteSerializer):
+    source = serializers.SlugRelatedField(
+        slug_field="name", read_only=True, many=False
+    )
+    # written in another case just for practice
     destination = serializers.CharField(
         source="destination.name", read_only=True
     )
 
 
-class RouteListSerializer(RouteSerializer):
+class RouteDetailSerializer(RouteSerializer):
     source = AirportSerializer(many=False, read_only=True)
     destination = AirportSerializer(many=False, read_only=True)

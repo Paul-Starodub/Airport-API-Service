@@ -21,4 +21,5 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/transport/", include("airplanes.urls", namespace="transport")),
     path("api/locations/", include("locations.urls", namespace="locations")),
+    path("api/travelings/", include("flight.urls", namespace="travelings")),
 ]

@@ -31,9 +31,6 @@ class Flight(models.Model):
     arrival_time = models.DateTimeField(auto_now_add=True)
     crews = models.ManyToManyField(to=Crew, related_name="flights")
 
-    class Meta:
-        unique_together = ("id", "crews")
-
     def __str__(self) -> str:
         return f"Route #{self.id}"
 

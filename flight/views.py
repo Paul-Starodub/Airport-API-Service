@@ -9,6 +9,7 @@ from flight.serializers import (
     FlightSerializer,
     FlightDetailSerializer,
     FlightListSerializer,
+    CrewDetailSerializer,
 )
 
 
@@ -17,6 +18,12 @@ class CrewViewSet(ModelViewSet):
 
     queryset = Crew.objects.all()
     serializer_class = CrewSerializer
+
+    def get_serializer_class(self) -> Type[Serializer]:
+        if self.action == "retrieve":
+            return CrewDetailSerializer
+
+        return super().get_serializer_class()
 
 
 class FlightViewSet(ModelViewSet):

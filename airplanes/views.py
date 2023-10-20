@@ -7,6 +7,7 @@ from airplanes.serializers import (
     AirplaneDetailSerializer,
     AirplaneTypeSerializer,
     AirplaneListSerializer,
+    AirplaneSerializer,
 )
 
 
@@ -21,10 +22,13 @@ class AirplaneViewSet(ModelViewSet):
     """Airplane CRUD endpoints"""
 
     queryset = Airplane.objects.all()
-    serializer_class = AirplaneDetailSerializer
+    serializer_class = AirplaneSerializer
 
     def get_serializer_class(self) -> Type[Serializer]:
-        if self.action in ("list", "retrieve"):
+        if self.action == "list":
             return AirplaneListSerializer
+
+        if self.action == "retrieve":
+            return AirplaneDetailSerializer
 
         return super().get_serializer_class()

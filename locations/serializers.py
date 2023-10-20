@@ -16,7 +16,10 @@ class RouteSerializer(serializers.ModelSerializer):
 
 
 class RouteListSerializer(RouteSerializer):
-    source = serializers.CharField(source="source.name", read_only=True)
+    source = serializers.SlugRelatedField(
+        slug_field="name", read_only=True, many=False
+    )
+    # written in another case just for practice
     destination = serializers.CharField(
         source="destination.name", read_only=True
     )

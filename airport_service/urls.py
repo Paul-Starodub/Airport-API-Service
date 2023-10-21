@@ -22,4 +22,5 @@ urlpatterns = [
     path("api/transport/", include("airplanes.urls", namespace="transport")),
     path("api/locations/", include("locations.urls", namespace="locations")),
     path("api/travelings/", include("flight.urls", namespace="travelings")),
+    path("api/user/", include("user.urls", namespace="user")),
 ]

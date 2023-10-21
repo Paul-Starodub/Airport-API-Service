@@ -1,5 +1,6 @@
+from datetime import timedelta
+
 from django.db import models
-from django.core.exceptions import ValidationError
 
 from airplanes.models import Airplane
 from locations.models import Route
@@ -27,15 +28,23 @@ class Flight(models.Model):
     airplane = models.ForeignKey(
         to=Airplane, on_delete=models.CASCADE, related_name="flying"
     )
-    departure_time = models.DateTimeField(auto_now_add=True)
-    arrival_time = models.DateTimeField(auto_now_add=True)
+    departure_time = models.DateTimeField()
+    arrival_time = models.DateTimeField()
     crews = models.ManyToManyField(to=Crew, related_name="flights", blank=True)
 
     def __str__(self) -> str:
         return f"Route #{self.id}"
 
-    def clean(self) -> None:
-        if self.arrival_time <= self.departure_time:
-            raise ValidationError(
-                "Arrival time must be greater than departure time."
+    def get_time_trip_in_hours(self) -> int:
+        # 900 km/h - speed of an airplane
+        return round(self.route.distance / 900)
+
+    def save(self, *args: tuple, **kwargs: dict) -> None:
+        # take 3 hours for registration/leaving airport
+        if not self.arrival_time:
+            time_trip = self.get_time_trip_in_hours()
+            self.arrival_time = self.departure_time + timedelta(
+                hours=time_trip + 3
             )
+
+        super(Flight, self).save(*args, **kwargs)

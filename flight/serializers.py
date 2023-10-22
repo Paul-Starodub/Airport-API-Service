@@ -35,7 +35,6 @@ class FlightSerializer(serializers.ModelSerializer):
             "route",
             "airplane",
             "departure_time",
-            "arrival_time",
             "crews",
         )
 
@@ -45,8 +44,11 @@ class FlightListSerializer(FlightSerializer):
     route = RouteListSerializer(many=False, read_only=True)
     crews = serializers.StringRelatedField(many=True, read_only=True)
 
+    class Meta(FlightSerializer.Meta):
+        fields = FlightSerializer.Meta.fields + ("arrival_time",)
 
-class FlightDetailSerializer(FlightSerializer):
+
+class FlightDetailSerializer(FlightListSerializer):
     airplane = AirplaneDetailSerializer(many=False, read_only=True)
     route = RouteDetailSerializer(many=False, read_only=True)
     crews = CrewSerializer(many=True, read_only=True)

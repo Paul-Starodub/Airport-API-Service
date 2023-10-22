@@ -48,10 +48,7 @@ class FlightListSerializer(FlightSerializer):
         fields = FlightSerializer.Meta.fields + ("arrival_time",)
 
 
-class FlightDetailSerializer(FlightSerializer):
+class FlightDetailSerializer(FlightListSerializer):
     airplane = AirplaneDetailSerializer(many=False, read_only=True)
     route = RouteDetailSerializer(many=False, read_only=True)
     crews = CrewSerializer(many=True, read_only=True)
-
-    class Meta(FlightListSerializer.Meta):
-        pass

@@ -15,7 +15,7 @@ from locations.serializers import (
 class RouteViewSet(ModelViewSet):
     """Route CRUD endpoints"""
 
-    queryset = Route.objects.all()
+    queryset = Route.objects.select_related("destination", "source")
     serializer_class = RouteSerializer
 
     def get_serializer_class(self) -> Type[Serializer]:

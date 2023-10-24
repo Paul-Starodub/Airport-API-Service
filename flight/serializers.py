@@ -12,6 +12,7 @@ class CrewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Crew
         fields = ("id", "first_name", "last_name", "flights")
+        read_only_fields = ("flights",)
 
 
 class CrewDetailSerializer(CrewSerializer):

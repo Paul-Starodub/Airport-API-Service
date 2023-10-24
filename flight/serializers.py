@@ -63,7 +63,7 @@ class FlightDetailSerializer(FlightListSerializer):
     class Meta(FlightListSerializer.Meta):
         fields = FlightSerializer.Meta.fields + ("taken_rows_and_seats",)
 
-    def get_taken_rows_and_seats(self, obj) -> list[str]:
+    def get_taken_rows_and_seats(self, obj: Flight) -> list[str]:
         taken_rows_and_seats = []
 
         for row, seat in zip(

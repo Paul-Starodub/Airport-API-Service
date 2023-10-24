@@ -16,7 +16,7 @@ from flight.serializers import (
 class CrewViewSet(ModelViewSet):
     """Crew CRUD endpoints"""
 
-    queryset = Crew.objects.all()
+    queryset = Crew.objects.prefetch_related("flights")
     serializer_class = CrewSerializer
 
     def get_serializer_class(self) -> Type[Serializer]:
@@ -29,7 +29,11 @@ class CrewViewSet(ModelViewSet):
 class FlightViewSet(ModelViewSet):
     """Flight CRUD endpoints"""
 
-    queryset = Flight.objects.all()
+    queryset = Flight.objects.prefetch_related("crews").select_related(
+        "route__source",
+        "route__destination",
+        "airplane__airplane_type",
+    )
     serializer_class = FlightSerializer
 
     def get_serializer_class(self) -> Type[Serializer]:

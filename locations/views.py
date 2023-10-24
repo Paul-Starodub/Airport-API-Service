@@ -31,5 +31,5 @@ class RouteViewSet(ModelViewSet):
 class AirportViewSet(ModelViewSet):
     """Airport CRUD endpoints"""
 
-    queryset = Airport.objects.all()
+    queryset = Airport.objects.prefetch_related("first_routes", "last_routes")
     serializer_class = AirportSerializer

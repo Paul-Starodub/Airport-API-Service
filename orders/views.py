@@ -17,8 +17,9 @@ class OrderViewSet(
     GenericViewSet,
 ):
     queryset = Order.objects.prefetch_related(
-        "tickets__flight__route",
-        "tickets__flight__airplane",
+        "tickets__flight__route__destination",
+        "tickets__flight__route__source",
+        "tickets__flight__airplane__airplane_type",
         "tickets__flight__crews",
     )
 

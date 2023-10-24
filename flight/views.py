@@ -1,6 +1,6 @@
 from typing import Type
 
-from django.db.models import QuerySet
+from django.db.models import QuerySet, F, Count
 
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.serializers import Serializer
@@ -31,7 +31,9 @@ class CrewViewSet(ModelViewSet):
 class FlightViewSet(ModelViewSet):
     """Flight CRUD endpoints"""
 
-    queryset = Flight.objects.prefetch_related("crews").select_related(
+    queryset = Flight.objects.prefetch_related(
+        "crews__flights"
+    ).select_related(
         "route__source",
         "route__destination",
         "airplane__airplane_type",
@@ -50,7 +52,14 @@ class FlightViewSet(ModelViewSet):
 
         if last_name:
             queryset = queryset.filter(crews__last_name__iexact=last_name)
-        return queryset.distinct()
+
+        # adding available tickets
+        queryset = queryset.annotate(
+            tickets_available=F("airplane__rows") * F("airplane__seats_in_row")
+            - Count("tickets")
+        )
+
+        return queryset
 
     def get_serializer_class(self) -> Type[Serializer]:
         if self.action == "list":

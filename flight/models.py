@@ -35,6 +35,18 @@ class Flight(models.Model):
     def __str__(self) -> str:
         return f"Route #{self.id}"
 
+    # These two follow properties are written specifically to reduce the
+    # queries of queries to the database since there are two identical external
+    # keys in the model and select_related & prefetch_related do not work
+
+    @property
+    def source(self) -> str:
+        return self.route.source.name
+
+    @property
+    def destination(self) -> str:
+        return self.route.destination.name
+
     def get_time_trip_in_hours(self) -> int:
         # 900 km/h - speed of an airplane
         return round(self.route.distance / 900)

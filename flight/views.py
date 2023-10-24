@@ -50,7 +50,7 @@ class FlightViewSet(ModelViewSet):
 
         if last_name:
             queryset = queryset.filter(crews__last_name__iexact=last_name)
-        return queryset
+        return queryset.distinct()
 
     def get_serializer_class(self) -> Type[Serializer]:
         if self.action == "list":

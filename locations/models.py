@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 
 
@@ -7,6 +8,9 @@ class Airport(models.Model):
 
     name = models.CharField(max_length=128)
     closest_big_city = models.CharField(max_length=128)
+    likes = models.ManyToManyField(
+        get_user_model(), related_name="airports", blank=True
+    )
 
     def __str__(self) -> str:
         return self.name

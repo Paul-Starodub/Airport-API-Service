@@ -5,7 +5,6 @@ from airplanes.serializers import (
     AirplaneDetailSerializer,
 )
 from flight.models import Crew, Flight
-from locations.serializers import RouteListSerializer, RouteDetailSerializer
 
 
 class CrewSerializer(serializers.ModelSerializer):
@@ -33,7 +32,8 @@ class FlightSerializer(serializers.ModelSerializer):
         model = Flight
         fields = (
             "id",
-            "route",
+            "source",
+            "destination",
             "airplane",
             "departure_time",
             "crews",
@@ -41,8 +41,8 @@ class FlightSerializer(serializers.ModelSerializer):
 
 
 class FlightListSerializer(FlightSerializer):
+    pass
     airplane = AirplaneListSerializer(many=False, read_only=True)
-    route = RouteListSerializer(many=False, read_only=True)
     crews = serializers.StringRelatedField(many=True, read_only=True)
     tickets_available = serializers.IntegerField(read_only=True)
 
@@ -55,7 +55,6 @@ class FlightListSerializer(FlightSerializer):
 
 class FlightDetailSerializer(FlightSerializer):
     airplane = AirplaneDetailSerializer(many=False, read_only=True)
-    route = RouteDetailSerializer(many=False, read_only=True)
     crews = CrewSerializer(many=True, read_only=True)
     taken_rows_and_seats = serializers.SerializerMethodField()
 

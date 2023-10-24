@@ -31,7 +31,9 @@ class CrewViewSet(ModelViewSet):
 class FlightViewSet(ModelViewSet):
     """Flight CRUD endpoints"""
 
-    queryset = Flight.objects.prefetch_related("crews").select_related(
+    queryset = Flight.objects.prefetch_related(
+        "crews__flights"
+    ).select_related(
         "route__source",
         "route__destination",
         "airplane__airplane_type",

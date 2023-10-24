@@ -49,7 +49,25 @@ class FlightListSerializer(FlightSerializer):
         fields = FlightSerializer.Meta.fields + ("arrival_time",)
 
 
+class RowSeatField(serializers.Field):
+    def to_representation(self, obj) -> str:
+        return f"{obj.row}-{obj.seat}"
+
+
 class FlightDetailSerializer(FlightListSerializer):
     airplane = AirplaneDetailSerializer(many=False, read_only=True)
     route = RouteDetailSerializer(many=False, read_only=True)
     crews = CrewSerializer(many=True, read_only=True)
+    taken_rows_and_seats = serializers.SerializerMethodField()
+
+    class Meta(FlightListSerializer.Meta):
+        fields = FlightSerializer.Meta.fields + ("taken_rows_and_seats",)
+
+    def get_taken_rows_and_seats(self, obj) -> list[str]:
+        taken_rows_and_seats = []
+
+        for row, seat in zip(
+            obj.tickets.values("row"), obj.tickets.values("seat")
+        ):
+            taken_rows_and_seats.append(f"{row}{seat}")
+        return taken_rows_and_seats

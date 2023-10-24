@@ -1,5 +1,7 @@
 from typing import Type
 
+from django.db.models import QuerySet
+
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.serializers import Serializer
 
@@ -35,6 +37,20 @@ class FlightViewSet(ModelViewSet):
         "airplane__airplane_type",
     )
     serializer_class = FlightSerializer
+
+    def get_queryset(self) -> QuerySet[Flight]:
+        queryset = self.queryset
+
+        # filtering
+        first_name = self.request.query_params.get("first_name")
+        last_name = self.request.query_params.get("last_name")
+
+        if first_name:
+            queryset = queryset.filter(crews__first_name__iexact=first_name)
+
+        if last_name:
+            queryset = queryset.filter(crews__last_name__iexact=last_name)
+        return queryset.distinct()
 
     def get_serializer_class(self) -> Type[Serializer]:
         if self.action == "list":

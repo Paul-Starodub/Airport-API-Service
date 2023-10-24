@@ -44,23 +44,22 @@ class FlightListSerializer(FlightSerializer):
     airplane = AirplaneListSerializer(many=False, read_only=True)
     route = RouteListSerializer(many=False, read_only=True)
     crews = serializers.StringRelatedField(many=True, read_only=True)
+    tickets_available = serializers.IntegerField(read_only=True)
 
     class Meta(FlightSerializer.Meta):
-        fields = FlightSerializer.Meta.fields + ("arrival_time",)
+        fields = FlightSerializer.Meta.fields + (
+            "arrival_time",
+            "tickets_available",
+        )
 
 
-class RowSeatField(serializers.Field):
-    def to_representation(self, obj) -> str:
-        return f"{obj.row}-{obj.seat}"
-
-
-class FlightDetailSerializer(FlightListSerializer):
+class FlightDetailSerializer(FlightSerializer):
     airplane = AirplaneDetailSerializer(many=False, read_only=True)
     route = RouteDetailSerializer(many=False, read_only=True)
     crews = CrewSerializer(many=True, read_only=True)
     taken_rows_and_seats = serializers.SerializerMethodField()
 
-    class Meta(FlightListSerializer.Meta):
+    class Meta(FlightSerializer.Meta):
         fields = FlightSerializer.Meta.fields + ("taken_rows_and_seats",)
 
     def get_taken_rows_and_seats(self, obj: Flight) -> list[str]:

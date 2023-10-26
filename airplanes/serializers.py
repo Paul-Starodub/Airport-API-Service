@@ -23,6 +23,7 @@ class AirplaneDetailSerializer(AirplaneSerializer):
         fields = (
             "id",
             "name",
+            "image",
             "rows",
             "seats_in_row",
             "airplane_type",
@@ -34,3 +35,9 @@ class AirplaneListSerializer(AirplaneSerializer):
     airplane_type = serializers.SlugRelatedField(
         many=False, read_only=True, slug_field="name"
     )
+
+
+class AirplaneImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Airplane
+        fields = ("id", "image")

@@ -41,7 +41,6 @@ class FlightSerializer(serializers.ModelSerializer):
 
 
 class FlightListSerializer(FlightSerializer):
-    pass
     airplane = AirplaneListSerializer(many=False, read_only=True)
     crews = serializers.StringRelatedField(many=True, read_only=True)
     tickets_available = serializers.IntegerField(read_only=True)

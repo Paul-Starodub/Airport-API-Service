@@ -5,6 +5,7 @@ from django.db.models import QuerySet, F, Count
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.serializers import Serializer
 
+from airplanes.permissions import IsAdminOrIfAuthenticatedReadOnly
 from flight.models import Crew, Flight
 from flight.serializers import (
     CrewSerializer,
@@ -20,6 +21,7 @@ class CrewViewSet(ModelViewSet):
 
     queryset = Crew.objects.prefetch_related("flights")
     serializer_class = CrewSerializer
+    permission_classes = (IsAdminOrIfAuthenticatedReadOnly,)
 
     def get_serializer_class(self) -> Type[Serializer]:
         if self.action == "retrieve":
@@ -39,6 +41,7 @@ class FlightViewSet(ModelViewSet):
         "airplane__airplane_type",
     )
     serializer_class = FlightSerializer
+    permission_classes = (IsAdminOrIfAuthenticatedReadOnly,)
 
     def get_queryset(self) -> QuerySet[Flight]:
         queryset = self.queryset

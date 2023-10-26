@@ -5,10 +5,17 @@ from django.db.models import QuerySet
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.serializers import Serializer
 from rest_framework import mixins
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
 
 from orders.models import Order
 from orders.serializers import OrderSerializer, OrderListSerializer
+
+
+class OrderPagination(PageNumberPagination):
+    page_size = 2
+    page_size_query_param = "page_size"
+    max_page_size = 100
 
 
 class OrderViewSet(
@@ -25,6 +32,7 @@ class OrderViewSet(
 
     serializer_class = OrderSerializer
     permission_classes = (IsAuthenticated,)
+    pagination_class = OrderPagination
 
     def get_queryset(self) -> QuerySet[Order]:
         return self.queryset.filter(user=self.request.user)

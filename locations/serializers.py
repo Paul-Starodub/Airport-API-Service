@@ -9,6 +9,22 @@ class AirportSerializer(serializers.ModelSerializer):
         fields = ("id", "name", "closest_big_city")
 
 
+class AirportListSerializer(AirportSerializer):
+    total_likes = serializers.IntegerField(
+        source="likes.count", read_only=True
+    )
+
+    class Meta:
+        model = Airport
+        fields = ("id", "name", "closest_big_city", "total_likes")
+
+
+class AirportLikeSerializer(AirportSerializer):
+    class Meta:
+        model = Airport
+        fields = ("id",)
+
+
 class RouteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Route

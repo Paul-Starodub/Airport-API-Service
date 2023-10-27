@@ -12,6 +12,10 @@ class Airport(models.Model):
         get_user_model(), related_name="airports", blank=True
     )
 
+    @property
+    def total_likes(self) -> int:
+        return self.likes.count()
+
     def __str__(self) -> str:
         return self.name
 

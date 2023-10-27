@@ -54,7 +54,7 @@ class AirplaneViewSet(ModelViewSet):
     def upload_image(
         self, request: Request, pk: Optional[int] = None
     ) -> Response:
-        """Endpoint to uploading image to specific bus"""
+        """Endpoint to uploading image to specific airplane"""
 
         bus = self.get_object()
         serializer = self.get_serializer(bus, data=request.data)

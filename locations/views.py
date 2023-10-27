@@ -42,9 +42,7 @@ class RouteViewSet(ModelViewSet):
 class AirportViewSet(ModelViewSet):
     """Airport CRUD endpoints"""
 
-    queryset = Airport.objects.annotate(total_likes=Count("likes")).values(
-        "id", "name", "closest_big_city", "total_likes"
-    )
+    queryset = Airport.objects.annotate(total_likes=Count("likes"))
     serializer_class = AirportSerializer
     permission_classes = (IsAuthenticatedOrAnonymous,)
 
@@ -65,6 +63,7 @@ class AirportViewSet(ModelViewSet):
 
         airplane = self.get_object()
         user = self.request.user
+        print(user)
         if user not in airplane.likes.all():
             airplane.likes.add(user)
             return Response(

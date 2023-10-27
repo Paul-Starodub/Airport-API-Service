@@ -11,7 +11,7 @@ class AirportSerializer(serializers.ModelSerializer):
 
 class AirportListSerializer(AirportSerializer):
     total_likes = serializers.IntegerField(
-        source="likes.count", read_only=True
+        read_only=True
     )
 
     class Meta:

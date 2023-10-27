@@ -7,6 +7,8 @@ from rest_framework.decorators import action
 from rest_framework.request import Request
 from rest_framework.response import Response
 
+from django.db.models import Count
+
 from locations.models import Route, Airport
 from locations.permissions import IsAuthenticatedOrAnonymous
 from airplanes.permissions import IsAdminOrIfAuthenticatedReadOnly
@@ -40,7 +42,9 @@ class RouteViewSet(ModelViewSet):
 class AirportViewSet(ModelViewSet):
     """Airport CRUD endpoints"""
 
-    queryset = Airport.objects.prefetch_related("first_routes", "last_routes")
+    queryset = Airport.objects.annotate(total_likes=Count("likes")).values(
+        "id", "name", "closest_big_city", "total_likes"
+    )
     serializer_class = AirportSerializer
     permission_classes = (IsAuthenticatedOrAnonymous,)
 

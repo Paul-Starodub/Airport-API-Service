@@ -7,7 +7,7 @@ from rest_framework.decorators import action
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from django.db.models import Prefetch, QuerySet
+from django.db.models import Count
 
 from locations.models import Route, Airport
 from locations.permissions import IsAuthenticatedOrAnonymous
@@ -29,20 +29,6 @@ class RouteViewSet(ModelViewSet):
     serializer_class = RouteSerializer
     permission_classes = (IsAdminOrIfAuthenticatedReadOnly,)
 
-    def get_queryset(self) -> QuerySet[Route]:
-        airport_subquery = Airport.objects.only(
-            "id", "name", "closest_big_city"
-        )
-
-        queryset = Route.objects.select_related(
-            "destination", "source"
-        ).prefetch_related(
-            Prefetch("source", queryset=airport_subquery),
-            Prefetch("destination", queryset=airport_subquery),
-        )
-
-        return queryset
-
     def get_serializer_class(self) -> Type[Serializer]:
         if self.action == "list":
             return RouteListSerializer
@@ -56,7 +42,9 @@ class RouteViewSet(ModelViewSet):
 class AirportViewSet(ModelViewSet):
     """Airport CRUD endpoints"""
 
-    queryset = Airport.objects.prefetch_related("first_routes", "last_routes")
+    queryset = Airport.objects.annotate(total_likes=Count("likes")).values(
+        "id", "name", "closest_big_city", "total_likes"
+    )
     serializer_class = AirportSerializer
     permission_classes = (IsAuthenticatedOrAnonymous,)
 

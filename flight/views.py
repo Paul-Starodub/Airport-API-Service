@@ -1,6 +1,6 @@
 from typing import Type
 
-from django.db.models import QuerySet, F, Count
+from django.db.models import Count, QuerySet, F
 
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.serializers import Serializer
@@ -34,7 +34,7 @@ class FlightViewSet(ModelViewSet):
     """Flight CRUD endpoints"""
 
     queryset = Flight.objects.prefetch_related(
-        "crews__flights"
+        "crews",
     ).select_related(
         "route__source",
         "route__destination",

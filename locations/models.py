@@ -32,7 +32,7 @@ class Route(models.Model):
     distance = models.PositiveBigIntegerField()
 
     def __str__(self) -> str:
-        return f"Route from {self.source} to {self.destination}"
+        return f"Route #{self.id}"
 
     def clean(self) -> None:
         if self.source == self.destination:

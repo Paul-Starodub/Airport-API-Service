@@ -18,5 +18,5 @@ class IsAuthenticatedOrAnonymous(BasePermission):
             request.user
             and request.user.is_authenticated
             and request.method == "POST"
-            and view.action in ("evaluate",)
+            and view.action == "evaluate"
         )

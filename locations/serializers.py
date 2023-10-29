@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
 
 from locations.models import Route, Airport
 
@@ -24,6 +25,16 @@ class AirportLikeSerializer(AirportSerializer):
 
 
 class RouteSerializer(serializers.ModelSerializer):
+    def validate(self, attrs: dict) -> dict:
+        data = super().validate(attrs=attrs)
+        source = attrs.get("source")
+        destination = attrs.get("destination")
+
+        if source == destination:
+            raise ValidationError("Source and destination cannot be the same.")
+
+        return data
+
     class Meta:
         model = Route
         fields = ("id", "source", "destination", "distance")

@@ -6,7 +6,6 @@ from rest_framework.viewsets import GenericViewSet
 from rest_framework.serializers import Serializer
 from rest_framework import mixins
 from rest_framework.pagination import PageNumberPagination
-from rest_framework.permissions import IsAuthenticated
 
 from orders.models import Order
 from orders.serializers import OrderSerializer, OrderListSerializer
@@ -31,7 +30,6 @@ class OrderViewSet(
     )
 
     serializer_class = OrderSerializer
-    permission_classes = (IsAuthenticated,)
     pagination_class = OrderPagination
 
     def get_queryset(self) -> QuerySet[Order]:

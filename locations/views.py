@@ -63,7 +63,6 @@ class AirportViewSet(ModelViewSet):
 
         airplane = self.get_object()
         user = self.request.user
-        print(user)
         if user not in airplane.likes.all():
             airplane.likes.add(user)
             return Response(

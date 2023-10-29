@@ -38,6 +38,6 @@ class Route(models.Model):
         if self.source == self.destination:
             raise ValidationError("Source and destination cannot be the same")
 
-    def save(self, *args, **kwargs) -> None:
+    def save(self, *args: tuple, **kwargs: dict) -> None:
         self.clean()
         super().save(*args, **kwargs)

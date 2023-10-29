@@ -56,8 +56,8 @@ class AirplaneViewSet(ModelViewSet):
     ) -> Response:
         """Endpoint to uploading image to specific airplane"""
 
-        bus = self.get_object()
-        serializer = self.get_serializer(bus, data=request.data)
+        airplane = self.get_object()
+        serializer = self.get_serializer(airplane, data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_200_OK)

@@ -1,4 +1,5 @@
 from datetime import timedelta
+from typing import Optional, Any
 
 from django.db import models
 
@@ -39,7 +40,13 @@ class Flight(models.Model):
         # 900 km/h - speed of an airplane
         return round(self.route.distance / 900)
 
-    def save(self, *args: tuple, **kwargs: dict) -> None:
+    def save(
+        self,
+        force_insert: bool = False,
+        force_update: bool = False,
+        using: Optional[Any] = None,
+        update_fields: Optional[Any] = None,
+    ) -> None:
         # take 3 hours for registration/leaving airport
         if not self.arrival_time:
             time_trip = self.get_time_trip_in_hours()
@@ -47,4 +54,6 @@ class Flight(models.Model):
                 hours=time_trip + 3
             )
 
-        super(Flight, self).save(*args, **kwargs)
+        super(Flight, self).save(
+            force_insert, force_update, using, update_fields
+        )

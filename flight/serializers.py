@@ -5,6 +5,7 @@ from airplanes.serializers import (
     AirplaneDetailSerializer,
 )
 from flight.models import Crew, Flight
+from locations.serializers import RouteDetailSerializer
 
 
 class CrewSerializer(serializers.ModelSerializer):
@@ -55,6 +56,7 @@ class FlightDetailSerializer(FlightSerializer):
     airplane = AirplaneDetailSerializer(many=False, read_only=True)
     crews = CrewSerializer(many=True, read_only=True)
     taken_rows_and_seats = serializers.SerializerMethodField()
+    route = RouteDetailSerializer(many=False, read_only=True)
 
     class Meta(FlightSerializer.Meta):
         fields = FlightSerializer.Meta.fields + ("taken_rows_and_seats",)

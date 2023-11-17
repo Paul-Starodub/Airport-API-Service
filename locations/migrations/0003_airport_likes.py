@@ -15,7 +15,9 @@ class Migration(migrations.Migration):
             model_name="airport",
             name="likes",
             field=models.ManyToManyField(
-                blank=True, related_name="airports", to=settings.AUTH_USER_MODEL
+                blank=True,
+                related_name="airports",
+                to=settings.AUTH_USER_MODEL,
             ),
         ),
     ]

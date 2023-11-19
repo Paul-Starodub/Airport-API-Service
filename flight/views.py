@@ -4,6 +4,11 @@ from django.db.models import Count, QuerySet, F
 
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.serializers import Serializer
+from rest_framework.request import Request
+from rest_framework.response import Response
+
+from drf_spectacular.types import OpenApiTypes
+from drf_spectacular.utils import extend_schema, OpenApiParameter
 
 from airplanes.permissions import IsAdminOrIfAuthenticatedReadOnly
 from flight.models import Crew, Flight
@@ -72,3 +77,20 @@ class FlightViewSet(ModelViewSet):
             return FlightDetailSerializer
 
         return super().get_serializer_class()
+
+    @extend_schema(
+        parameters=[
+            OpenApiParameter(
+                "first_name",
+                type=OpenApiTypes.STR,
+                description="Filtering by first name (ex. ?first_name=paul)",
+            ),
+            OpenApiParameter(
+                "last_name",
+                type=OpenApiTypes.STR,
+                description="Filtering by last name (ex. ?last_name=Starodub)",
+            ),
+        ]
+    )
+    def list(self, request: Request, *args: tuple, **kwargs: dict) -> Response:
+        return super().list(request, *args, **kwargs)

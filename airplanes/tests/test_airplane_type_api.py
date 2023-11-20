@@ -30,8 +30,8 @@ class AuthenticatedAirplaneTypeApiTests(TestCase):
         self.client.force_authenticate(self.user)
 
     def test_list_airplane_type(self) -> None:
-        AirplaneType(name="airplane_type1")
-        AirplaneType(name="airplane_type2")
+        AirplaneType.objects.create(name="airplane_type1")
+        AirplaneType.objects.create(name="airplane_type2")
         res = self.client.get(AIRPLANE_TYPE_URL)
         airplane_types = AirplaneType.objects.all()
         serializer = AirplaneTypeSerializer(airplane_types, many=True)

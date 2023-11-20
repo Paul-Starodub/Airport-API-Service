@@ -40,6 +40,6 @@ class AuthenticatedAirplaneTypeApiTests(TestCase):
         self.assertEqual(res.data, serializer.data)
 
     def test_str_method(self) -> None:
-        airplane_type = AirplaneType(name="airplane_type1")
+        airplane_type = AirplaneType.objects.create(name="airplane_type1")
 
         self.assertEqual(str(airplane_type), "airplane_type1")

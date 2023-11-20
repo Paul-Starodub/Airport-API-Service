@@ -53,7 +53,7 @@ class AirportViewSet(ModelViewSet):
         return super().get_serializer_class()
 
     @action(
-        methods=["POST"],
+        methods=["GET"],
         detail=True,
         url_path="change-like",
         serializer_class=AirportLikeSerializer,

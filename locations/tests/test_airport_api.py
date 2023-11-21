@@ -36,7 +36,9 @@ class AuthenticatedAirportApiTests(TestCase):
         self.client1.force_authenticate(self.staff)
 
     def test_str_method(self) -> None:
-        airport = Airport(name="Germany", closest_big_city="Berlin")
+        airport = Airport.objects.create(
+            name="Germany", closest_big_city="Berlin"
+        )
 
         self.assertEqual(str(airport), "Germany")
 

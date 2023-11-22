@@ -30,7 +30,7 @@ class AuthenticatedCrewApiTests(TestCase):
             "test@test.com", "test_password"
         )
         self.client.force_authenticate(self.user)
-        self.user = get_user_model().objects.create_superuser(
+        self.user = get_user_model().objects.create_user(
             "test_admin@test.com", "test_password", is_staff=True
         )
         self.client1.force_authenticate(self.user)

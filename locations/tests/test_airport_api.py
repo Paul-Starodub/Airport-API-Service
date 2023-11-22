@@ -29,7 +29,7 @@ class AuthenticatedAirportApiTests(TestCase):
         self.user = get_user_model().objects.create_user(
             "test@test.com", "testpass"
         )
-        self.staff = get_user_model().objects.create_superuser(
+        self.staff = get_user_model().objects.create_user(
             "testq@gmail.com", "testqpass", is_staff=True
         )
         self.client.force_authenticate(self.user)

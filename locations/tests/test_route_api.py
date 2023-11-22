@@ -10,7 +10,11 @@ from rest_framework.test import APIClient
 from rest_framework.exceptions import ValidationError
 
 from locations.models import Airport, Route
-from locations.serializers import RouteListSerializer, RouteSerializer
+from locations.serializers import (
+    RouteListSerializer,
+    RouteSerializer,
+    RouteDetailSerializer,
+)
 
 ROUTE_URL = reverse("locations:route-list")
 
@@ -38,15 +42,15 @@ class AuthenticatedRouteApiTests(TestCase):
         self.route_destination = Airport.objects.create(
             name="Poland", closest_big_city="Warshaw"
         )
-
-    def test_str_method(self) -> None:
-        route = Route.objects.create(
-            source=self.route_source,
-            destination=self.route_destination,
+        self.route = Route.objects.create(
+            source=self.route_destination,
+            destination=self.route_source,
             distance=1270,
+            id=1,
         )
 
-        self.assertEqual(str(route), "Route #1")
+    def test_str_method(self) -> None:
+        self.assertEqual(str(self.route), "Route #1")
 
     def test_list_routes(self) -> None:
         res = self.client.get(ROUTE_URL)
@@ -87,3 +91,11 @@ class AuthenticatedRouteApiTests(TestCase):
             "Source and destination cannot be the same.",
             str(context.exception),
         )
+
+    def test_retrieve_route_detail(self) -> None:
+        url = reverse("locations:route-detail", kwargs={"pk": self.route.id})
+        response = self.client.get(url)
+        serializer = RouteDetailSerializer(self.route)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTrue(serializer.data, response.data)

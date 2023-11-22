@@ -71,7 +71,7 @@ class AuthenticatedFlightApiTests(TestCase):
             "test@test.com", "test_password"
         )
         self.client.force_authenticate(self.user)
-        self.staff = get_user_model().objects.create_superuser(
+        self.staff = get_user_model().objects.create_user(
             "test_admin@test.com", "test1_password", is_staff=True
         )
         self.client1.force_authenticate(self.staff)

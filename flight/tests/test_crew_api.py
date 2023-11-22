@@ -6,7 +6,7 @@ from rest_framework import status
 from rest_framework.test import APIClient
 
 from flight.models import Crew
-from flight.serializers import CrewDetailSerializer, CrewSerializer
+from flight.serializers import CrewDetailSerializer
 
 CREW_URL = reverse("travelings:crew-list")
 

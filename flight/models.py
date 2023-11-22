@@ -34,7 +34,7 @@ class Flight(models.Model):
     crews = models.ManyToManyField(to=Crew, related_name="flights", blank=True)
 
     def __str__(self) -> str:
-        return f"Route #{self.id}"
+        return f"Flight #{self.id}"
 
     def get_time_trip_in_hours(self) -> int:
         # 900 km/h - speed of an airplane

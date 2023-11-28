@@ -1,7 +1,7 @@
 import io
 
 from django.contrib.auth import get_user_model
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from django.urls import reverse
 from django.core.files.uploadedfile import SimpleUploadedFile
 
@@ -75,6 +75,7 @@ class AuthenticatedAirplaneApiTests(TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertTrue(serializer.data, response.data)
 
+    @override_settings(MEDIA_ROOT="/tmp/media")
     def test_upload_image(self) -> None:
         image_stream = io.BytesIO()
         image = Image.new("RGB", (100, 100), "white")

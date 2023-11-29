@@ -40,9 +40,6 @@ class AirplaneViewSet(ModelViewSet):
         if self.action == "retrieve":
             return AirplaneDetailSerializer
 
-        if self.action == "upload_image":
-            return AirplaneImageSerializer
-
         return super().get_serializer_class()
 
     @action(
@@ -50,6 +47,7 @@ class AirplaneViewSet(ModelViewSet):
         detail=True,
         url_path="upload-image",
         permission_classes=[IsAdminUser],
+        serializer_class=AirplaneImageSerializer,
     )
     def upload_image(
         self, request: Request, pk: Optional[int] = None
